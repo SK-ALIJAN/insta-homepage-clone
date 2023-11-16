@@ -1,4 +1,4 @@
-import { AddComment } from "./actionType";
+import { AddComment, LoginSuccess } from "./actionType";
 
 export function AddComments(id, obj) {
   return (state, dispatch) => {
@@ -13,5 +13,11 @@ export function AddComments(id, obj) {
     });
 
     dispatch({ type: AddComment, payload: newData });
+  };
+}
+
+export function authtication(obj) {
+  return (state, dispatch) => {
+    dispatch({ type: LoginSuccess, payload: obj });
   };
 }

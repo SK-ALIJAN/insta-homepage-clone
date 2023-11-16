@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import { loginSchema } from "./schemas";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { authtication } from "../Redux/action";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   email: "",
@@ -9,57 +12,87 @@ const initialValues = {
 };
 
 const Login = ({ changeMoveTo }) => {
+  let dispatch = useDispatch();
+  let navigate = useNavigate();
+  let [error, setError] = useState(false);
+  let { data } = useSelector((store) => store.SignupReducer);
   let { values, errors, handleBlur, handleChange, handleSubmit, touched } =
     useFormik({
       initialValues: initialValues,
       validationSchema: loginSchema,
       onSubmit: (values, action) => {
+        if (data.email === values.email && data.password === values.password) {
+          dispatch(authtication(values));
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
+        } else {
+          setError(true);
+        }
+
         action.resetForm();
       },
     });
 
-  return (
-    <DIV>
-      <h1>Sign in</h1>
-      <form action="" onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="text"
-            placeholder="Email"
-            name="email"
-            value={values.email}
-            onBlur={handleBlur}
-            onChange={handleChange}
-          />
-          {errors.email && touched.email ? <p>{errors.email}</p> : ""}
-        </div>
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={values.password}
-            onBlur={handleBlur}
-            onChange={handleChange}
-          />
-          {errors.password && touched.password ? <p>{errors.password}</p> : ""}
-        </div>
-        <button type="submit" className="submit">
-          Login
-        </button>
-      </form>
-      <p className="change">
-        New user ?
-        <button
-          onClick={() => {
-            changeMoveTo("signup");
-          }}
-        >
-          Signup
-        </button>
-      </p>
+  let handleClick = () => {
+    setError(false);
+  };
 
-    </DIV>
+  return (
+    <WRAPPER>
+      <DIV className="childWrapper">
+        <h1>Sign in</h1>
+        <form action="" onSubmit={handleSubmit}>
+          <div>
+            <input
+              type="text"
+              placeholder="Email"
+              name="email"
+              value={values.email}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            />
+            {errors.email && touched.email ? <p>{errors.email}</p> : ""}
+          </div>
+          <div>
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              value={values.password}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            />
+            {errors.password && touched.password ? (
+              <p>{errors.password}</p>
+            ) : (
+              ""
+            )}
+          </div>
+          <button type="submit" className="submit">
+            Login
+          </button>
+        </form>
+        <p className="change">
+          New user ?
+          <button
+            onClick={() => {
+              changeMoveTo("signup");
+            }}
+          >
+            Signup
+          </button>
+        </p>
+      </DIV>
+      {error && (
+        <div className="errorDisplay">
+          <div>
+            <p>Please check your Credencials</p>
+            <button onClick={handleClick}>Okey</button>
+          </div>
+        </div>
+      )}
+    </WRAPPER>
   );
 };
 
@@ -71,7 +104,7 @@ let DIV = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 11px;
-  width: 50%;
+  width: 40%;
   text-align: center;
   background-color: #0a0a0a80;
   color: white;
@@ -119,15 +152,53 @@ let DIV = styled.div`
       cursor: pointer;
     }
   }
+`;
 
-  .wrong {
-    position: absolute;
-    top: -60px;
-    left: 50%;
-    transform: translate(-50%);
-    background-color: red;
-    padding: 10px;
-    border-radius: 7px;
-    font-size: 15px;
+let WRAPPER = styled.div`
+  .errorDisplay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #514e4e92;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: grid;
+    place-content: center;
+
+    div {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      text-align: center;
+
+      button {
+        margin-top: 1rem;
+        width: 100%;
+        border: 0;
+        padding: 10px;
+        background-image: linear-gradient(
+          45deg,
+          #405de6,
+          #5851db,
+          #833ab4,
+          #c13584,
+          #e1306c,
+          #fd1d1d,
+          #f56040,
+          #f77737,
+          #fcaf45,
+          #ffdc80
+        );
+        color: white;
+        border-radius: 7px;
+        cursor: pointer;
+      }
+    }
+  }
+  @media screen and (max-width: 800px) {
+    .childWrapper {
+      width: 80%;
+    }
   }
 `;

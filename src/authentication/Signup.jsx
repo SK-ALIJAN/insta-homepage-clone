@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import { signupSchema } from "./schemas";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { SignupSuccess } from "../Redux/actionType";
 
 const initialValues = {
   name: "",
@@ -17,7 +18,9 @@ const Signup = ({ changeMoveTo }) => {
       initialValues: initialValues,
       validationSchema: signupSchema,
       onSubmit: (values, action) => {
+        dispatch({ type: SignupSuccess, payload: values });
         action.resetForm();
+        changeMoveTo("login")
       },
     });
 
@@ -89,7 +92,7 @@ let WRAPPER = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 11px;
-  width: 50%;
+  width: 40%;
   text-align: center;
   background-color: #0a0a0a80;
   color: white;
@@ -135,5 +138,9 @@ let WRAPPER = styled.div`
       margin-left: 15px;
       cursor: pointer;
     }
+  }
+
+  @media screen and (max-width: 800px) {
+    width: 80%;
   }
 `;
