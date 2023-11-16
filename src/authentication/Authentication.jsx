@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Signup from "./Signup";
 import Login from "./Login";
 import styled from "styled-components";
-import auth from "../../assets/auth.jpg";
 
 const Authentication = () => {
   const [moveto, setMoveTo] = useState("signup");
@@ -14,7 +12,6 @@ const Authentication = () => {
 
   return (
     <DIV>
-      <img src={auth} alt="" />
       {moveto === "signup" ? (
         <Signup changeMoveTo={changeMoveTo} />
       ) : (
@@ -27,9 +24,19 @@ const Authentication = () => {
 export default Authentication;
 
 let DIV = styled.div`
-  img {
-    position: absolute;
-    width: 100vw;
-    height: 100%;
-  }
+  background-image: linear-gradient(
+    45deg,
+    #405de6,
+    #5851db,
+    #833ab4,
+    #c13584,
+    #e1306c,
+    #fd1d1d,
+    #f56040,
+    #f77737,
+    #fcaf45,
+    #ffdc80
+  );
+  height: 100vh;
+  width: 100%;
 `;

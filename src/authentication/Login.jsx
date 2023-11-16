@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import { loginSchema } from "./schemas";
-import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from "../../Redux/actionType";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   email: "",
@@ -12,34 +9,12 @@ const initialValues = {
 };
 
 const Login = ({ changeMoveTo }) => {
-  const dispatch = useDispatch();
-  const signupData = useSelector((store) => store.authReducer.data);
-  const navigate = useNavigate();
-  let [error, setError] = useState(false);
-
   let { values, errors, handleBlur, handleChange, handleSubmit, touched } =
     useFormik({
       initialValues: initialValues,
       validationSchema: loginSchema,
       onSubmit: (values, action) => {
         action.resetForm();
-
-        if (
-          values.email === signupData.email &&
-          values.password === signupData.password
-        ) {
-          dispatch({ type: userLogin });
-          values.isAuth=true;
-          localStorage.setItem("loggin", JSON.stringify(values));
-          setTimeout(() => {
-            navigate("/");
-          }, 1000);
-        } else {
-          setError(true);
-          setTimeout(() => {
-            setError(false);
-          }, 2000);
-        }
       },
     });
 
@@ -84,7 +59,6 @@ const Login = ({ changeMoveTo }) => {
         </button>
       </p>
 
-      {error ? <p className="wrong">Wrong Credencial!</p> : ""}
     </DIV>
   );
 };
@@ -126,7 +100,7 @@ let DIV = styled.div`
     border-radius: 7px;
     border: 0;
     width: 40%;
-    background-color: teal;
+    background-color: #5851db;
     color: white;
     margin-top: 20px;
     cursor: pointer;

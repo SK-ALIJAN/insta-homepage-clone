@@ -2,7 +2,6 @@ import React from "react";
 import { useFormik } from "formik";
 import { signupSchema } from "./schemas";
 import { useDispatch } from "react-redux";
-import { userSignup } from "../../Redux/actionType";
 import styled from "styled-components";
 
 const initialValues = {
@@ -18,11 +17,7 @@ const Signup = ({ changeMoveTo }) => {
       initialValues: initialValues,
       validationSchema: signupSchema,
       onSubmit: (values, action) => {
-        dispatch({ type: userSignup, payload: values });
         action.resetForm();
-        setTimeout(() => {
-          changeMoveTo("signin");
-        }, 1000);
       },
     });
 
@@ -122,7 +117,7 @@ let WRAPPER = styled.div`
     border-radius: 7px;
     border: 0;
     width: 40%;
-    background-color: teal;
+    background-color: #5851db;
     color: white;
     margin-top: 20px;
     cursor: pointer;

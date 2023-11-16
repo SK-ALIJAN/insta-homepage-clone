@@ -1,14 +1,12 @@
-import { useEffect } from "react";
-import "./App.css";
-import { useDispatch } from "react-redux";
-import { AddComments } from "./Redux/action";
+
+import MainRouter from "./Router/mainRouter";
 
 function App() {
-  let dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(AddComments(3,{}));
-  }, []);
-  return <div className="App"></div>;
+  return (
+    <div className="App">
+      <MainRouter />
+    </div>
+  );
 }
 
 export default App;
