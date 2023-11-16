@@ -195,6 +195,7 @@ let DIV = styled.div`
           border: 0;
           background-color: grey;
           color: white;
+          cursor: pointer;
         }
       }
     }
