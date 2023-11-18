@@ -1,8 +1,16 @@
 import React from "react";
+import { shallowEqual, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Navbar = () => {
+  let { isAuth, data } = useSelector((store) => {
+    return {
+      isAuth: store.SignINReducer.isAuth,
+      data: store.SignupReducer.data,
+    };
+  }, shallowEqual);
+
   return (
     <>
       <WRAPPER>
@@ -10,9 +18,16 @@ const Navbar = () => {
           src="https://cdn-icons-png.flaticon.com/128/3955/3955024.png"
           alt=""
         />
-        <Link to={"/authentication"}>
-          <button>Log In / Sign Up</button>
-        </Link>
+
+        {isAuth ? (
+          <Link>
+            <p className="welcoming">Welcome!-{data.name.toUpperCase()}</p>
+          </Link>
+        ) : (
+          <Link to={"/authentication"}>
+            <button>Log In / Sign Up</button>
+          </Link>
+        )}
       </WRAPPER>
 
       <DIV>
@@ -54,6 +69,7 @@ let WRAPPER = styled.div`
   padding-left: 2rem;
   padding-right: 2rem;
   overflow: hidden;
+
   img {
     width: 3rem;
     padding: 10px;
@@ -65,6 +81,10 @@ let WRAPPER = styled.div`
     color: white;
     border-radius: 8px;
     cursor: pointer;
+  }
+
+  .welcoming {
+    text-decoration: none !important;
   }
 `;
 
